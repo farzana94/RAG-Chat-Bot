@@ -35,9 +35,7 @@ Create a .env file and add your Google API key:
 
 		GOOGLE_API_KEY=your_google_api_key
 
-Usage
-
-		Run the Flask App
+Run the Flask App
 
 		python app.py
 
