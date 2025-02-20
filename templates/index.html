@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>RAG Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: auto;
+            text-align: center;
+        }
+        #chat-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            text-align: left;
+            background-color: #f9f9f9;
+        }
+        .message {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+        .user {
+            background-color: #007bff;
+            color: white;
+            text-align: right;
+            float: right;
+            clear: both;
+        }
+        .ai {
+            background-color: #e0e0e0;
+            text-align: left;
+            float: left;
+            clear: both;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Upload a Document</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="fileInput" name="file" required>
+        <button type="submit">Upload</button>
+    </form>
+    <p id="upload-status"></p>
+
+    <h2>Chat with AI</h2>
+    <div id="chat-box"></div>
+    <input type="text" id="query" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+    <button onclick="sendQuery()">Send</button>
+
+    <script>
+        document.getElementById("uploadForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            let formData = new FormData();
+            let fileInput = document.getElementById("fileInput");
+            formData.append("file", fileInput.files[0]);
+
+            fetch("/upload", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                let status = document.getElementById("upload-status");
+                status.innerText = data.success || data.error;
+                status.style.color = data.success ? "green" : "red";
+            });
+        });
+
+        function sendQuery() {
+            let queryInput = document.getElementById("query");
+            let query = queryInput.value.trim();
+            if (!query) return;
+
+            appendMessage("You", query, "user");
+            queryInput.value = "";
+            queryInput.focus();
+
+            fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ "query": query })
+            })
+            .then(response => response.json())
+            .then(data => {
+                let answer = data.answer || "No response received.";
+                let sources = data.sources && data.sources.length 
+                    ? `<div class="source"><strong>Sources:</strong> ${data.sources.join(", ")}</div>` 
+                    : "";
+                appendMessage("AI", answer + sources, "ai");
+            })
+            .catch(error => {
+                appendMessage("AI", "Error: Unable to fetch response.", "ai");
+            });
+        }
+
+        function appendMessage(sender, text, className) {
+            let chatBox = document.getElementById("chat-box");
+            let messageDiv = document.createElement("div");
+            messageDiv.classList.add("message", className);
+            messageDiv.innerHTML = `<strong>${sender}:</strong> ${formatText(text)}`;
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;  // Auto-scroll to latest message
+        }
+
+        function formatText(text) {
+            return text
+                .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")  // Bold
+                .replace(/\*(.*?)\*/g, "<em>$1</em>");             // Italic
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendQuery();
+            }
+        }
+    </script>
+</body>
+</html>

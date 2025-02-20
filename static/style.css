@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    width: 50%;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#file-input {
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+#upload-status, #chat-response {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#chat-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.message {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 8px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.user {
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end;
+    text-align: right;
+}
+
+.ai {
+    background-color: #f1f1f1;
+    align-self: flex-start;
+    text-align: left;
+}
+
+/* 🔹 Added Styling for Sources */
+.source {
+    font-size: 12px;
+    color: #555;
+    margin-top: 5px;
+    border-top: 1px solid #ddd;
+    padding-top: 3px;
+}

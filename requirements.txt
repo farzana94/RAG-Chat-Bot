@@ -1,0 +1,12 @@
+Flask[async]>=2.2.0
+langchain_community
+langchain
+langchain_google_genai
+langchain_huggingface
+sentence-transformers
+faiss-cpu
+pypdf2
+pypdf
+pymupdf
+python-dotenv
+chardet
