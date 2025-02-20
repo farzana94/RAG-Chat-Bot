@@ -14,12 +14,13 @@ Installation & Setup
 
 1. Clone the Repository
 
-git clone https://github.com/your-repo/rag-chatbot.git
-cd rag-chatbot
+https://github.com/farzana94/RAG-Chat-Bot.git
+cd RAG-Chat-Bot
 
 2. Create a Virtual Environment
 
-python -m venv venv
+python3 -m venv venv
+
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 3. Install Dependencies
